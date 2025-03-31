@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 
+import Search from "./components/Search";
+
 const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
@@ -22,7 +24,17 @@ export default function RootLayout({
       <body
         className={`${nunito.variable} antialiased`}
       >
-        {children}
+        <main>
+          <header className="max-w-[90%] mx-auto py-4 flex justify-between items-center">
+            <h1 className="font-bold">Where in the world?</h1>
+            <div className="darkMode">
+              <p className="font-semibold">Dark Mode</p>
+            </div>
+          </header>
+          <hr />
+          <Search></Search>
+          {children}
+        </main>
       </body>
     </html>
   );
