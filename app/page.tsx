@@ -2,27 +2,26 @@ import Image from "next/image";
 
 export default async function Home() {
   const countries = await (await fetch("https://restcountries.com/v3.1/all")).json();
-  const selectedCountires = countries.slice(0,8);
+  const start = Math.random() * (countries.length - 9);
+  const selectedCountires = countries.slice(start, start + 8);
   console.log(selectedCountires);
-  console.log(countries);
-  console.log(selectedCountires[0].flags.png);
 
   return (
-    <div className="grid max-w-[80%] gap-4">
-      {selectedCountires.map((country: {altSpellings : string;
+    <div className="grid max-w-[90%] gap-12 mx-auto lg:grid-cols-4 mt-8">
+      {selectedCountires.map((country: {name : {common: string};
                                         population: string;
                                         continents: string;
                                         capital: string;
                                         flags: {png: string}}) => 
       {
         return (
-          <div key={country.altSpellings[1]} className="grid">
-            <Image src={country.flags.png} alt={`${country.altSpellings[1]} flag image`} width={300} height={200}></Image>
-            <div>
-              <h2>{country.altSpellings[1]}</h2>
-              <p>Population: {country.population}</p>
-              <p>Region: {country.continents[0]}</p>
-              <p>Capital: {country.capital[0]}</p>
+          <div key={country.name.common} className="grid bg-white rounded-2xl shadow-xl">
+            <Image className="rounded-t-2xl w-full h-40 max-lg:w-full" src={country.flags.png} alt={`${country.name.common} flag image`} width={300} height={200}></Image>
+            <div className="grid px-4 py-6">
+              <h2 className="font-bold mb-4 text-xl">{country.name.common}</h2>
+              <p><span className="font-bold">Population:</span> {country.population}</p>
+              <p><span className="font-bold">Region:</span> {country.continents[0]}</p>
+              <p><span className="font-bold">Capital:</span> {country.capital?.[0]}</p>
             </div>
           </div>
         )
