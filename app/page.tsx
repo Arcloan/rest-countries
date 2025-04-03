@@ -1,14 +1,35 @@
 import Image from "next/image";
 
-export default async function Home() {
+export default async function Home(props: {
+  searchParams?: Promise<{
+    country?: string;
+    region?: string;
+  }>;
+}) {
+  const searchParam = await props.searchParams;
   const countries = await (await fetch("https://restcountries.com/v3.1/all")).json();
-  const start = Math.random() * (countries.length - 9);
-  const selectedCountires = countries.slice(start, start + 8);
-  console.log(selectedCountires);
+  let selectedCountries = countries.filter((country: {name : {common: string};
+                                        population: string;
+                                        continents: string;
+                                        capital: string;
+                                        region: string;
+                                        flags: {png: string}} ) => {
+                                          if (!searchParam || !searchParam.country) return true;
+                                          return country.name.common.toLowerCase().includes(searchParam.country.toLowerCase());
+                                        })
 
+  selectedCountries = selectedCountries.filter((country: {name : {common: string};
+                                        population: string;
+                                        continents: string;
+                                        capital: string;
+                                        region: string;
+                                        flags: {png: string}} ) => {
+                                          if (!searchParam || !searchParam.region) return true;
+                                          return country.region.toLowerCase().includes(searchParam.region.toLowerCase());
+                                        })
   return (
     <div className="grid max-w-[90%] gap-12 mx-auto lg:grid-cols-4 mt-8">
-      {selectedCountires.map((country: {name : {common: string};
+      {selectedCountries.map((country: {name : {common: string};
                                         population: string;
                                         continents: string;
                                         capital: string;
