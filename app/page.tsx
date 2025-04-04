@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { promises as fs } from 'fs';
 
 export default async function Home(props: {
   searchParams?: Promise<{
@@ -6,21 +8,21 @@ export default async function Home(props: {
     region?: string;
   }>;
 }) {
+  const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
+  const data = JSON.parse(file);
   const searchParam = await props.searchParams;
-  const countries = await (await fetch("https://restcountries.com/v3.1/all")).json();
-  let selectedCountries = countries.filter((country: {name : {common: string};
+  const countries = data;
+  let selectedCountries = countries.filter((country: {name :string;
                                         population: string;
-                                        continents: string;
                                         capital: string;
                                         region: string;
                                         flags: {png: string}} ) => {
                                           if (!searchParam || !searchParam.country) return true;
-                                          return country.name.common.toLowerCase().includes(searchParam.country.toLowerCase());
+                                          return country.name.toLowerCase().includes(searchParam.country.toLowerCase());
                                         })
 
   selectedCountries = selectedCountries.filter((country: {name : {common: string};
                                         population: string;
-                                        continents: string;
                                         capital: string;
                                         region: string;
                                         flags: {png: string}} ) => {
@@ -29,22 +31,24 @@ export default async function Home(props: {
                                         })
   return (
     <div className="grid max-w-[90%] gap-12 mx-auto lg:grid-cols-4 mt-8">
-      {selectedCountries.map((country: {name : {common: string};
+      {selectedCountries.map((country: {name :string;
                                         population: string;
-                                        continents: string;
+                                        region: string;
                                         capital: string;
                                         flags: {png: string}}) => 
       {
         return (
-          <div key={country.name.common} className="grid bg-white rounded-2xl shadow-xl">
-            <Image className="rounded-t-2xl w-full h-40 max-lg:w-full" src={country.flags.png} alt={`${country.name.common} flag image`} width={300} height={200}></Image>
-            <div className="grid px-4 py-6">
-              <h2 className="font-bold mb-4 text-xl">{country.name.common}</h2>
-              <p><span className="font-bold">Population:</span> {country.population}</p>
-              <p><span className="font-bold">Region:</span> {country.continents[0]}</p>
-              <p><span className="font-bold">Capital:</span> {country.capital?.[0]}</p>
+          <Link key={country.name} href={`/${country.name}`}>
+            <div className="grid bg-white rounded-2xl shadow-xl">
+              <Image className="rounded-t-2xl w-full h-40 max-lg:w-full" src={country.flags.png} alt={`${country.name} flag image`} width={300} height={200}></Image>
+              <div className="grid px-4 py-6">
+                <h2 className="font-bold mb-4 text-xl">{country.name}</h2>
+                <p><span className="font-bold">Population:</span> {country.population}</p>
+                <p><span className="font-bold">Region:</span> {country.region}</p>
+                <p><span className="font-bold">Capital:</span> {country.capital}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         )
       })}
     </div>

@@ -24,8 +24,8 @@ export default function RootLayout({
       <body
         className={`${nunito.variable} antialiased`}
       >
-        <main>
-          <header className="bg-white max-w-[90%] mx-auto py-4 flex justify-between items-center">
+        <main className="h-screen bg-very-light-gray">
+          <header className="bg-white max-w-[80%] mx-auto py-4 flex justify-between items-center">
             <h1 className="font-bold">Where in the world?</h1>
             <div className="darkMode">
               <p className="font-semibold">Dark Mode</p>
