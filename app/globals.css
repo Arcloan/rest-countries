@@ -14,3 +14,5 @@
   --color-very-light-gray: hsl(0, 0%, 98%);
   --color-white: hsl(0, 0%, 100%);
 }
+
+@custom-variant dark (&:where(.dark, .dark *));

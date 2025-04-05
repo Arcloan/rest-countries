@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 
 import Search from "./components/Search";
+import DarkModeButton from "./components/DarkModeButton";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -20,15 +21,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${nunito.variable} antialiased`}
+        className={`${nunito.variable} antialiased dark:bg-very-dark-blue`}
       >
-        <main className="h-screen bg-very-light-gray">
-          <header className="bg-white max-w-[80%] mx-auto py-4 flex justify-between items-center">
+        <main className="h-screen bg-very-light-gray dark:bg-very-dark-blue">
+          <header className="bg-white dark:text-white px-[10%] mx-auto py-4 flex justify-between items-center dark:bg-dark-blue">
             <h1 className="font-bold">Where in the world?</h1>
             <div className="darkMode">
-              <p className="font-semibold">Dark Mode</p>
+              <DarkModeButton></DarkModeButton>
             </div>
           </header>
           <hr />

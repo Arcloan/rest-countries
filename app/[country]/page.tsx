@@ -8,17 +8,18 @@ export default async function Page(
     const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
     const data = JSON.parse(file);
     const params = await props.params;
-    const countryName = params.country;
+    const countryName = decodeURI(new URLSearchParams(params).get("country") as string);
     const countryData = data.filter((c : {name: string}) => c.name === countryName)[0];
-    let borderCountries = countryData.borders.map((borderCountry: string) => {
+    let borderCountries = countryData.borders?.map((borderCountry: string) => {
         return data.filter((c : {alpha2Code: string; alpha3Code: string}) => {
             return c.alpha2Code === borderCountry || c.alpha3Code === borderCountry;
         })
     });
-    borderCountries = borderCountries.slice(0, Math.min(5, borderCountries.length));
+    
+    borderCountries = borderCountries?.slice(0, Math.min(5, borderCountries.length));
     
     return (
-        <main className="bg-very-light-gray">
+        <main className="bg-very-light-gray dark:bg-very-dark-blue dark:text-white">
             <BackButton></BackButton>
             <section className="max-w-[80%] mx-auto mt-16 grid lg:grid-cols-2 gap-12 items-center" aria-label="Country Description">
                 <Image src={countryData.flags.png} className="w-full h-90" width={300} height={200} alt="Country flag"></Image>
@@ -42,9 +43,9 @@ export default async function Page(
                     <div className="flex gap-4 max-lg:flex-col mb-12">
                         <p className="font-bold">Border Countries: </p>
                         <div className="basis-full lg:basis-auto flex gap-2 items-start">
-                            {borderCountries.map((borderCountry: [{name: string}]) => {
+                            {borderCountries?.map((borderCountry: [{name: string}]) => {
                                 return (
-                                    <div key={borderCountry[0].name} className="py-2 px-4 shadow-xl">
+                                    <div key={borderCountry[0].name} className="py-2 px-4 shadow-xl dark:bg-dark-blue">
                                         {borderCountry[0].name}
                                     </div>
                                 )
