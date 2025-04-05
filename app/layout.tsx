@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
+import { Suspense } from "react";
 
 import Search from "./components/Search";
 import DarkModeButton from "./components/DarkModeButton";
@@ -33,7 +34,9 @@ export default function RootLayout({
             </div>
           </header>
           <hr />
-          <Search></Search>
+          <Suspense fallback={<div>Loading</div>}>
+            <Search></Search>
+          </Suspense>
           {children}
         </main>
       </body>
