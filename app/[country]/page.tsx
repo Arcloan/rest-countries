@@ -1,13 +1,15 @@
 import BackButton from "../components/backButton";
 import Image from "next/image";
 //import { promises as fs } from 'fs';
+import dataCountry from "@/data.json";
 
 export default async function Page(
     props: { params: Promise<{ country: string }> }
 ) {
     //const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
     //const data = JSON.parse(file);
-    const data = await ((await fetch(`https://${process.env.VERCEL_URL}/data.json`)).json());
+    //const data = await ((await fetch(`https://${process.env.VERCEL_URL}/data.json`)).json());
+    const data = dataCountry;
     const params = await props.params;
     const countryName = decodeURI(new URLSearchParams(params).get("country") as string);
     const countryData = data.filter((c : {name: string}) => c.name === countryName)[0];
@@ -37,14 +39,14 @@ export default async function Page(
 
                     <div className="grid gap-2 h-max">
                         <p><span className="font-bold">Top Level Domain: </span>{countryData.topLevelDomain[0]}</p>
-                        <p><span className="font-bold">Currencies: </span>{countryData.currencies.map((currency: {name: string}) => currency.name).join(",")}</p>
+                        <p><span className="font-bold">Currencies: </span>{countryData.currencies!.map((currency: {name: string}) => currency.name).join(",")}</p>
                         <p><span className="font-bold">Languages: </span>{countryData.languages.map((lang: {name: string}) => lang.name).join(",")}</p>
                     </div>
 
                     <div className="flex gap-4 max-lg:flex-col mb-12">
                         <p className="font-bold">Border Countries: </p>
                         <div className="basis-full lg:basis-auto flex gap-2 items-start">
-                            {borderCountries?.map((borderCountry: [{name: string}]) => {
+                            {borderCountries?.map((borderCountry) => {
                                 return (
                                     <div key={borderCountry[0].name} className="py-2 px-4 shadow-xl dark:bg-dark-blue">
                                         {borderCountry[0].name}
