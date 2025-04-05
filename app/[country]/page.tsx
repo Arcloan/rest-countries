@@ -1,14 +1,10 @@
 import BackButton from "../components/backButton";
 import Image from "next/image";
-//import { promises as fs } from 'fs';
 import dataCountry from "@/data.json";
 
 export default async function Page(
     props: { params: Promise<{ country: string }> }
 ) {
-    //const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
-    //const data = JSON.parse(file);
-    //const data = await ((await fetch(`https://${process.env.VERCEL_URL}/data.json`)).json());
     const data = dataCountry;
     const params = await props.params;
     const countryName = decodeURI(new URLSearchParams(params).get("country") as string);

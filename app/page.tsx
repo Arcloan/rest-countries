@@ -1,14 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-//import { promises as fs } from 'fs';
 import dataCountry from "@/data.json";
-
-//type Country = {name :string;
-  //              population: string;
-    //            capital: string;
-      //          region: string;
-        //        flags: {png: string}
-          //    }
 
 export default async function Home(props: {
   searchParams?: Promise<{
@@ -16,20 +8,18 @@ export default async function Home(props: {
     region?: string;
   }>;
 }) {
-  //const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
-  //const data = JSON.parse(file);
   const data = dataCountry;
   const searchParam = await props.searchParams;
   const countries = data;
   let selectedCountries = countries.filter((country ) => {
-                                          if (!searchParam || !searchParam.country) return true;
-                                          return country.name.toLowerCase().includes(searchParam.country.toLowerCase());
-                                        })
+    if (!searchParam || !searchParam.country) return true;
+    return country.name.toLowerCase().includes(searchParam.country.toLowerCase());
+  })
 
   selectedCountries = selectedCountries.filter((country) => {
-                                          if (!searchParam || !searchParam.region) return true;
-                                          return country.region.toLowerCase().includes(searchParam.region.toLowerCase());
-                                        })
+    if (!searchParam || !searchParam.region) return true;
+    return country.region.toLowerCase().includes(searchParam.region.toLowerCase());
+  })
   return (
     <div className="grid max-w-[80%] gap-12 mx-auto lg:grid-cols-4 mt-8">
       {selectedCountries.map((country) => 
