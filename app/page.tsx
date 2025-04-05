@@ -17,7 +17,7 @@ export default async function Home(props: {
 }) {
   //const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
   //const data = JSON.parse(file);
-  const data = await ((await fetch("/data.json")).json());
+  const data = await ((await fetch(`${process.env.URL}/data.json`)).json());
   const searchParam = await props.searchParams;
   const countries = data;
   let selectedCountries = countries.filter((country: Country ) => {
