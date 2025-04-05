@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { promises as fs } from 'fs';
+//import { promises as fs } from 'fs';
 
 type Country = {name :string;
                 population: string;
@@ -15,8 +15,9 @@ export default async function Home(props: {
     region?: string;
   }>;
 }) {
-  const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
-  const data = JSON.parse(file);
+  //const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
+  //const data = JSON.parse(file);
+  const data = await ((await fetch("/data.json")).json());
   const searchParam = await props.searchParams;
   const countries = data;
   let selectedCountries = countries.filter((country: Country ) => {

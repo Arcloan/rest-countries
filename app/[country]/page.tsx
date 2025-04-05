@@ -1,12 +1,13 @@
 import BackButton from "../components/backButton";
 import Image from "next/image";
-import { promises as fs } from 'fs';
+//import { promises as fs } from 'fs';
 
 export default async function Page(
     props: { params: Promise<{ country: string }> }
 ) {
-    const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
-    const data = JSON.parse(file);
+    //const file = await fs.readFile(process.cwd() + '/data.json', 'utf8');
+    //const data = JSON.parse(file);
+    const data = await ((await fetch("/data.json")).json());
     const params = await props.params;
     const countryName = decodeURI(new URLSearchParams(params).get("country") as string);
     const countryData = data.filter((c : {name: string}) => c.name === countryName)[0];
